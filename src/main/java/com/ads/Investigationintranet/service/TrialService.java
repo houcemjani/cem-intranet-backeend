@@ -11,7 +11,7 @@ public interface TrialService {
 
     Map<String, Object> getFilterList();
 
-    Map<String, Object> getClinicalTrials(TrialFilterDto filters, Integer index, int pageSize , int pageNumber);
+    Map<String, Object> getClinicalTrials(TrialFilterDto filters,int pageSize , int pageNumber);
 
 
 

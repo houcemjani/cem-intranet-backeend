@@ -10,7 +10,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TrialFilterDto {
+
     private List<OrganDto> organs;
+    private List<StateDto> states;
+    private String word;
+    private int filterIndex;
 
 }
 
