@@ -1,8 +1,6 @@
 package com.ads.Investigationintranet.domain.trial;
 
-import com.ads.Investigationintranet.entity.Organ;
-import com.ads.Investigationintranet.entity.OrganFamily;
-import com.ads.Investigationintranet.entity.Trial;
+import com.ads.Investigationintranet.entity.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

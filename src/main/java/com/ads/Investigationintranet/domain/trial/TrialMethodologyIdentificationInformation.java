@@ -1,5 +1,6 @@
 package com.ads.Investigationintranet.domain.trial;
 
+import com.ads.Investigationintranet.entity.MetastaticLine;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

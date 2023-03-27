@@ -24,6 +24,12 @@ public class TrialServiceImpl implements TrialService {
     private OrganRepository organRepository;
     @Autowired
     private StateRepository stateRepository;
+    @Autowired
+    private MetastaticLineRepository metastaticLineRepository;
+    @Autowired
+    private IllnessStateRepository illnessStateRepository;
+    @Autowired
+    private PhaseRepository phaseRepository;
 
     @Cacheable(value = "clinicalTrialsCache", key = "#filters.toString() + #index + #pageNumber")
     @Override
@@ -59,6 +65,18 @@ public class TrialServiceImpl implements TrialService {
 
             }
             case 3: {
+                ids = filters.getPhases().stream()
+                    .filter(phase -> phase.isChecked())
+                    .map(phase -> phase.getId())
+                    .collect(Collectors.toList());
+                if (ids.size() > 0) {
+                    result.put("list", this.trialRepository.findByPhasesIds(ids, pageable).getContent());
+                    result.put("totalRecords", this.trialRepository.findByPhasesIds(ids, pageable).getTotalElements());
+                } else {
+                    result.put("list", this.trialRepository.findAllPhasesTrials(pageable).getContent());
+                    result.put("totalRecords", this.trialRepository.findAllPhasesTrials(pageable).getTotalElements());
+                }
+                return result;
 
             }
             case 4: {
@@ -112,9 +130,16 @@ public class TrialServiceImpl implements TrialService {
 
         List<OrganDto> organs = this.organRepository.findAllOrgans();
         List<StateDto> states = this.stateRepository.findStates();
+        List<MetastaticLineDto> lines=this.metastaticLineRepository.findMetastaticLines();
+        List<IllnessStateDto> illnessStates=this.illnessStateRepository.findIllnessStates();
+        List<PhaseDto> phases=this.phaseRepository.findAllPhases();
+
         Map<String, Object> filters = new HashMap<>();
         filters.put("organs", organs);
         filters.put("states", states);
+        filters.put("lines", lines);
+        filters.put("illnessStates", illnessStates);
+        filters.put("phases", phases);
         return filters;
 
     }

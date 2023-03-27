@@ -1,6 +1,6 @@
 
 
-package com.ads.Investigationintranet.domain.trial;
+package com.ads.Investigationintranet.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

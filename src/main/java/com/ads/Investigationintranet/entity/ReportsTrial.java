@@ -133,7 +133,6 @@ public class ReportsTrial  {
 
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "phaseHhhid")
-    
     private Phase phase;
 
     @ManyToMany(cascade = CascadeType.DETACH)

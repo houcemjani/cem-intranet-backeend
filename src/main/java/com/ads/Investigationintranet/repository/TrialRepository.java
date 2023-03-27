@@ -14,7 +14,19 @@ import java.util.List;
 @Repository
 public interface TrialRepository extends JpaRepository<Trial, Long> {
 
-    /****************************************************** research by word *****************************************/
+    /************************************************ research all trials *********************************************/
+
+    @Query(value = "SELECT DISTINCT new com.ads.Investigationintranet.dto.TrialDto(t1.hhhId ,t2.name,t3.protocolNumber,t4.numberClinicalTrialsGov," +
+        "t5.principalInvestigator1.firstName,t5.principalInvestigator1.lastName ) " +
+        " FROM Trial t1 " +
+        "JOIN TrialBase t2 ON t1.hhhId = t2.hhhId " +
+        "JOIN TrialIdentificationInformationGeneral t3 On t3.trial.hhhId=t1.hhhId " +
+        "JOIN TrialAdministrativeRegulatoryInformation t4 On t4.trial.hhhId=t1.hhhId " +
+        "JOIN ReportsTrial t5 ON t5.hhhId = t1.hhhId " +
+        "WHERE  t5.state.hhhId=5 ")
+    Page<TrialDto> findAllTrials(Pageable pageable);
+
+    /****************************************************** research trials by word *****************************************/
     @Query(value = "SELECT DISTINCT new com.ads.Investigationintranet.dto.TrialDto(t1.hhhId ,t2.name,t3.protocolNumber,t4.numberClinicalTrialsGov," +
             "t5.principalInvestigator1.firstName,t5.principalInvestigator1.lastName ) " +
             " FROM Trial t1 " +
@@ -29,7 +41,7 @@ public interface TrialRepository extends JpaRepository<Trial, Long> {
             "AND t5.state.hhhId=5 ")
     Page<TrialDto> findByWord(@Param("word") String word, Pageable pageable);
 
-    /*********************************************** research by Organs **********************************************/
+    /*********************************************** research trials by Organs **********************************************/
     @Query(value = "SELECT DISTINCT new com.ads.Investigationintranet.dto.TrialDto(t1.hhhId ,t2.name,t3.protocolNumber,t4.numberClinicalTrialsGov," +
             "t5.principalInvestigator1.firstName,t5.principalInvestigator1.lastName ) " +
             " FROM Trial t1 "
@@ -52,19 +64,34 @@ public interface TrialRepository extends JpaRepository<Trial, Long> {
             + "WHERE o.hhhId IN :ids "
             + "AND t5.state.hhhId=5 ")
     Page<TrialDto> findByOrgansIds(@Param("ids") List<Long> ids, Pageable pageable);
-
-
-    /************************************************ research all trials *********************************************/
+    /************************************************ research by phases *********************************************/
 
     @Query(value = "SELECT DISTINCT new com.ads.Investigationintranet.dto.TrialDto(t1.hhhId ,t2.name,t3.protocolNumber,t4.numberClinicalTrialsGov," +
-            "t5.principalInvestigator1.firstName,t5.principalInvestigator1.lastName ) " +
-            " FROM Trial t1 " +
-            "JOIN TrialBase t2 ON t1.hhhId = t2.hhhId " +
-            "JOIN TrialIdentificationInformationGeneral t3 On t3.trial.hhhId=t1.hhhId " +
-            "JOIN TrialAdministrativeRegulatoryInformation t4 On t4.trial.hhhId=t1.hhhId " +
-            "JOIN ReportsTrial t5 ON t5.hhhId = t1.hhhId " +
-            "WHERE  t5.state.hhhId=5 ")
-    Page<TrialDto> findAllTrials(Pageable pageable);
+        "t5.principalInvestigator1.firstName,t5.principalInvestigator1.lastName ) " +
+        " FROM Trial t1 "
+        + "JOIN TrialBase t2 ON t1.hhhId = t2.hhhId "
+        + "JOIN TrialIdentificationInformationGeneral t3 ON t3.trial.hhhId = t1.hhhId "
+        + "JOIN TrialAdministrativeRegulatoryInformation t4 ON t4.trial.hhhId = t1.hhhId "
+        + "JOIN ReportsTrial t5 ON t5.hhhId = t1.hhhId "
+        + "JOIN t5.phase "
+        + "WHERE t2.name IS NOT NULL "
+        + "AND t2.name <>'' ")
+    Page<TrialDto> findAllPhasesTrials(Pageable pageable);
+
+    @Query(value = "SELECT DISTINCT new com.ads.Investigationintranet.dto.TrialDto(t1.hhhId ,t2.name,t3.protocolNumber,t4.numberClinicalTrialsGov," +
+        "t5.principalInvestigator1.firstName,t5.principalInvestigator1.lastName ) " +
+        " FROM Trial t1 "
+        + "JOIN TrialBase t2 ON t1.hhhId = t2.hhhId "
+        + "JOIN TrialIdentificationInformationGeneral t3 ON t3.trial.hhhId = t1.hhhId "
+        + "JOIN TrialAdministrativeRegulatoryInformation t4 ON t4.trial.hhhId = t1.hhhId "
+        + "JOIN ReportsTrial t5 ON t5.hhhId = t1.hhhId "
+        + "JOIN t5.phase "
+        + "WHERE t5.phase.hhhId IN :ids "
+        + "AND t2.name IS NOT NULL "
+        + "AND t2.name <>'' ")
+    Page<TrialDto> findByPhasesIds(@Param("ids") List<Long> ids, Pageable pageable);
+
+
 
 
 

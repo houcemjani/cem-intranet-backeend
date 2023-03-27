@@ -11,6 +11,6 @@ import java.util.List;
 
 public interface StateRepository extends JpaRepository<State,Long> {
 
-  @Query("SELECT DISTINCT new com.ads.Investigationintranet.dto.StateDto(State) FROM com.ads.Investigationintranet.entity.State state where state.hhhId IN (5, 6, 7)")
+  @Query("SELECT DISTINCT new com.ads.Investigationintranet.dto.StateDto(s) FROM TrialState s where s.hhhId IN (5, 6, 7)")
   List<StateDto> findStates();
 }

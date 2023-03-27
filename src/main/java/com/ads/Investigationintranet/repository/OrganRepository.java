@@ -4,7 +4,7 @@ import com.ads.Investigationintranet.dto.OrganDto;
 import com.ads.Investigationintranet.entity.Organ;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+
 
 import java.util.List;
 

@@ -13,6 +13,7 @@ public class TrialFilterDto {
 
     private List<OrganDto> organs;
     private List<StateDto> states;
+    private List<PhaseDto> phases;
     private String word;
     private int filterIndex;
 

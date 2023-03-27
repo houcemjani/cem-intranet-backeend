@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface PhaseRepository extends JpaRepository<Phase,Long> {
 
-    @Query("SELECT DISTINCT new com.ads.Investigationintranet.dto.PhaseDto(p) FROM Phase p")
+    @Query("SELECT DISTINCT new com.ads.Investigationintranet.dto.PhaseDto(p) FROM Phase p "
+        + "JOIN ReportsTrial t ON t.phase.hhhId = p.hhhId ")
     List<PhaseDto> findAllPhases();
 }

@@ -1,9 +1,7 @@
 package com.ads.Investigationintranet.domain.trial;
 
 import com.ads.Investigationintranet.domain.establishment.EstablishmentDepartment;
-import com.ads.Investigationintranet.entity.Organ;
-import com.ads.Investigationintranet.entity.OrganFamily;
-import com.ads.Investigationintranet.entity.Trial;
+import com.ads.Investigationintranet.entity.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
