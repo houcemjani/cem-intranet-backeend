@@ -6,6 +6,7 @@ import com.ads.Investigationintranet.domain.contactableMember.ContactableMember;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -16,7 +17,7 @@ import java.util.List;
 @Table(name = "ig_contactsets")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
 public class ContactSet  {
 
     @Id

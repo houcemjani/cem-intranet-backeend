@@ -13,9 +13,9 @@ public class PhaseDto {
     private String name;
     private boolean checked;
 
-    public PhaseDto(Phase phase){
-        id= phase.getHhhId();
-        name= phase.getNameFr();
+    public PhaseDto(Long id,String name) {
+      this.id=id;
+      this.name=name;
     }
 }
 

@@ -13,12 +13,12 @@ public class OrganDto {
     private String name;
     private boolean checked;
 
-    public OrganDto(Organ organ) {
-        id= organ.getHhhId();
-        name= organ.getNameFr();
-
-
+    public OrganDto(Long id,String name) {
+        this.id=id;
+        this.name=name;
     }
+
+
 }
 
 

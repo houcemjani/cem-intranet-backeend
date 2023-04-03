@@ -13,8 +13,8 @@ public class StateDto {
   private String name;
   private boolean checked;
 
-  public StateDto(State state){
-    id=state.getHhhId();
-    name=state.getNameFr();
+  public StateDto(Long id, String name){
+    this.id=id;
+    this.name=name;
   }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface OrganRepository extends JpaRepository<Organ,Long> {
 
-    @Query("SELECT DISTINCT new com.ads.Investigationintranet.dto.OrganDto(o) From Trial t1 " +
+    @Query("SELECT DISTINCT new com.ads.Investigationintranet.dto.OrganDto(o.hhhId,o.nameFr) From Trial t1 " +
             "JOIN TrialBase t2 ON t1.hhhId = t2.hhhId " +
             "JOIN TrialIdentificationInformationGeneral t3 On t3.trial.hhhId=t1.hhhId " +
             "JOIN TrialAdministrativeRegulatoryInformation t4 On t4.trial.hhhId=t1.hhhId " +

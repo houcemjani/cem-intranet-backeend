@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface MetastaticLineRepository extends JpaRepository<MetastaticLine,Long> {
 
-  @Query("SELECT DISTINCT new com.ads.Investigationintranet.dto.MetastaticLineDto(m) FROM MetastaticLine m ")
+  @Query("SELECT DISTINCT new com.ads.Investigationintranet.dto.MetastaticLineDto(m.hhhId,m.nameFr) FROM MetastaticLine m ")
   List<MetastaticLineDto> findMetastaticLines();
 }

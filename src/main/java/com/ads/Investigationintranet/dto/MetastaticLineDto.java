@@ -14,8 +14,8 @@ public class MetastaticLineDto {
   private String name;
   private boolean checked;
 
-  public MetastaticLineDto(MetastaticLine m){
-  id=m.getHhhId();
-  name=m.getNameFr();
+  public MetastaticLineDto(Long id,String name) {
+    this.id=id;
+    this.name=name;
   }
 }

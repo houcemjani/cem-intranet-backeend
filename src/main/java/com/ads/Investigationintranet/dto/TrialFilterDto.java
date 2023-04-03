@@ -14,6 +14,8 @@ public class TrialFilterDto {
     private List<OrganDto> organs;
     private List<StateDto> states;
     private List<PhaseDto> phases;
+    private List<MetastaticLineDto> lines;
+    private List<IllnessStateDto> illnessStates;
     private String word;
     private int filterIndex;
 
