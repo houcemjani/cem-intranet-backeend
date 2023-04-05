@@ -12,6 +12,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+//import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.authority.SimpleGrantedAuthority;
+//import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -24,7 +28,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User  {
+public class User
+//    implements UserDetails
+{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -125,5 +131,47 @@ public class User  {
     @OrderBy("hhhId ASC")
     @Fetch(FetchMode.SUBSELECT)
     private Collection<TrialMessage> receivedMessages;
-
+//
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        Collection<GrantedAuthority> authorities=new ArrayList<>();
+//        authorities.add(new SimpleGrantedAuthority(role.getName()));
+//        return authorities;
+//    }
+//
+//    @Override
+//    public String getPassword() {
+//        return this.passwordEncrypted;
+//    }
+//
+//    @Override
+//    public String getUsername() {
+//        return this.userName;
+//    }
+//
+//    @Override
+//    public boolean isAccountNonExpired() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isAccountNonLocked() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isCredentialsNonExpired() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isEnabled() {
+//        return true;
+//    }
+//
+//
+//
+//    public boolean checkPassword(String password) {
+//        return new BCryptPasswordEncoder().matches(password,this.passwordEncrypted);
+//    }
 }

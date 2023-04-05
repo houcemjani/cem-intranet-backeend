@@ -440,7 +440,6 @@ public class Trial  {
 
     @OneToMany(mappedBy = "trial", cascade = CascadeType.ALL)
     @OrderBy("hhhId ASC")
-    
     private Collection<FileEntity> trialFiles = new ArrayList<>();
 
     @Column(name = "creationDate", updatable = false)
