@@ -63,45 +63,25 @@
 		</dependency>
 
 
+
+		<!-- Spring Data MongoDB -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb</artifactId>
-			<version>3.0.0</version>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongodb-driver-sync</artifactId>
+			<version>4.2.3</version>
 		</dependency>
 
-<!--		<dependency>-->
-<!--			<groupId>org.mongodb</groupId>-->
-<!--			<artifactId>mongo-java-driver</artifactId>-->
-<!--			<version>3.12.10</version>-->
-<!--		</dependency>-->
-
-<!--		<dependency>-->
-<!--			<groupId>org.mongodb</groupId>-->
-<!--			<artifactId>mongodb-driver-sync</artifactId>-->
-<!--			<version>3.12.10</version>-->
-<!--		</dependency>-->
-
-<!--		<dependency>-->
-<!--			<groupId>org.mongodb</groupId>-->
-<!--			<artifactId>mongodb-driver-sync</artifactId>-->
-<!--			<version>3.12.10</version>-->
-<!--		</dependency>-->
-
-
-
 		<dependency>
-			<groupId>org.zeroturnaround</groupId>
-			<artifactId>zt-zip</artifactId>
-			<version>1.12</version>
-			<type>jar</type>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-mail</artifactId>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongodb-driver-core</artifactId>
+			<version>4.2.3</version>
 		</dependency>
 
-
-
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>bson</artifactId>
+			<version>4.2.3</version>
+		</dependency>
 		<!--		<dependency>-->
 <!--			<groupId>org.springframework.boot</groupId>-->
 <!--			<artifactId>spring-boot-starter-cache</artifactId>-->
@@ -116,7 +96,12 @@
 <!--			<version>0.9.1</version>-->
 <!--		</dependency>-->
 	</dependencies>
-
+	<repositories>
+		<repository>
+			<id>mongodb-repo</id>
+			<url>https://repo.mongodb.org/maven2/</url>
+		</repository>
+	</repositories>
 	<build>
 		<plugins>
 			<plugin>
@@ -129,6 +114,14 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>9</source>
+					<target>9</target>
 				</configuration>
 			</plugin>
 		</plugins>

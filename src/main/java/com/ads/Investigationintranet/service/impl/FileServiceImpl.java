@@ -1,57 +1,63 @@
 package com.ads.Investigationintranet.service.impl;
 
-
+import com.ads.Investigationintranet.dto.FileData;
 import com.ads.Investigationintranet.service.FileService;
-import com.mongodb.client.gridfs.model.GridFSFile;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.gridfs.GridFsOperations;
-import org.springframework.data.mongodb.gridfs.GridFsResource;
-import org.springframework.http.ContentDisposition;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import com.mongodb.client.*;
+import org.bson.Document;
+import org.bson.types.Binary;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
-import org.zeroturnaround.zip.commons.IOUtils;
 
-import java.io.IOException;
-
-
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 public class FileServiceImpl implements FileService {
 
-//  @Autowired
-//  private GridFsOperations gridFsOperations;
+  @Override
+  public List<FileData> getFiles(int trialHhhId) {
 
-//  @Override
-//  public ResponseEntity<byte[]> getFilesByTrialHhhId(Integer trialHhhId) throws IOException {
-//    Query query = new Query(Criteria.where("metadata.trialHhhId").is(trialHhhId));
-//    GridFSFile file = gridFsOperations.findOne(query);
-//
-//    if (file == null) {
-//      return ResponseEntity.notFound().build();
-//    }
-//
-//    GridFsResource gridFsResource = gridFsOperations.getResource(file);
-//
-//    HttpHeaders headers = new HttpHeaders();
-//    headers.setContentType(MediaType.parseMediaType(file.getMetadata().get("contentType").toString()));
-//    headers.setContentLength(gridFsResource.contentLength());
-//    headers.setContentDisposition(ContentDisposition.builder("attachment").filename(file.getFilename()).build());
-//
-//    try {
-//      byte[] fileContent = IOUtils.toByteArray(gridFsResource.getInputStream());
-//      return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-//    }
-//  }
+    List<FileData> fileInfos = new ArrayList<>();
 
+    MongoClient mongoClient = MongoClients.create();
+    MongoDatabase mongoDatabase = mongoClient.getDatabase("test");
+    MongoCollection<Document> filesCollection = mongoDatabase.getCollection("com.hhhpartners.innohealth.innogec.domain.uploads.File.files");
+    MongoCollection<Document> chunksCollection = mongoDatabase.getCollection("com.hhhpartners.innohealth.innogec.domain.uploads.File.chunks", Document.class);
 
+    Document query = new Document("metadata.trialHhhId", trialHhhId);
+    try (MongoCursor<Document> cursor = filesCollection.find(query).iterator()) {
+      while (cursor.hasNext()) {
+        Document fileDoc = cursor.next();
+        byte[] fileData = null;
+        String filename = fileDoc.getString("filename");
+        String contentType = fileDoc.getString("contentType");
+        Date uploadDate = fileDoc.getDate("uploadDate");
+        ObjectId fileId = fileDoc.getObjectId("_id");
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (MongoCursor<Document> chunkCursor = chunksCollection.find(new Document("files_id", fileId)).sort(new Document("n", 1)).iterator()) {
+          while (chunkCursor.hasNext()) {
+            Binary chunkData = chunkCursor.next().get("data", Binary.class);
+            byte[] chunkBytes = chunkData.getData();
+            outputStream.write(chunkBytes);
+          }
+        }
+        fileData = outputStream.toByteArray();
+        FileData fileInfo = new FileData();
+        fileInfo.setData(fileData);
+        fileInfo.setFilename(filename);
+        fileInfo.setContentType(contentType);
+        fileInfo.setUploadDate(uploadDate);
+        fileInfos.add(fileInfo);
+      }
+    } catch (Exception e) {
+      throw new RuntimeException("Error retrieving files", e);
+    } finally {
+      mongoClient.close();
+    }
+    return fileInfos;
+  }
 }
 
 

@@ -1,10 +1,11 @@
 package com.ads.Investigationintranet.service;
 
-import org.springframework.http.ResponseEntity;
+import com.ads.Investigationintranet.dto.FileData;
 
-import java.io.IOException;
+import java.util.List;
 
 public interface FileService {
 
-//  ResponseEntity<byte[]> getFilesByTrialHhhId(Integer trialHhhId) throws IOException;
+  List<FileData> getFiles(int trialHhhId) ;
+
 }
