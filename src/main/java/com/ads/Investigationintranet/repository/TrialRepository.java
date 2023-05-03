@@ -351,4 +351,44 @@ public interface TrialRepository extends JpaRepository<Trial, Long> {
         + "WHERE p.hhhId IN :ids "
         + "AND s.hhhId IN (5, 6, 7) ")
     Page<TrialDto> findByIllnessStatesIds(@Param("ids") List<Long> ids, Pageable pageable);
+
+
+    @Query(value = "SELECT DISTINCT new com.ads.Investigationintranet.dto.TrialDto(" +
+            "t1.hhhId, " +
+            "t2.name, " +
+            "t5.protocolNumber, " +
+            "t6.firstName, " +
+            "t6.lastName, " +
+            "t7.firstName, " +
+            "t7.lastName, " +
+            "t8.firstName," +
+            "t8.lastName," +
+            "s.hhhId," +
+            "t9," +
+            "t10) " +
+            "FROM Trial t1 " +
+            "JOIN TrialBase t2 ON t1.hhhId = t2.hhhId " +
+            "JOIN ReportsTrial t5 ON t5.hhhId = t1.hhhId " +
+            "JOIN t5.state s " +
+            "LEFT JOIN t5.organs o " +
+            "LEFT JOIN t5.metastaticLines m " +
+            "LEFT JOIN t5.illnessStates i " +
+            "LEFT JOIN t5.phase p " +
+            "LEFT JOIN t5.principalInvestigator1 t6 " +
+            "LEFT JOIN t5.clinicalResearchAssistant1 t7 " +
+            "LEFT JOIN t5.clinicalResearchAssistant2 t8 " +
+            "LEFT JOIN igContactSet t9 ON t7.hhhId = t9.hhhId " +
+            "LEFT JOIN igContactSet t10 ON t8.hhhId = t10.hhhId " +
+            "WHERE (:organIds IS NULL OR o.hhhId IN :organIds) " +
+            "AND (:phaseIds IS NULL OR p.hhhId IN :phaseIds) " +
+            "AND (:stateIds IS NULL OR s.hhhId IN :stateIds) " +
+            "AND (:metastaticLinesIds IS NULL OR m.hhhId IN :metastaticLinesIds) " +
+            "AND (:illnessStatesIds IS NULL OR i.hhhId IN :illnessStatesIds) ")
+    Page<TrialDto> findByCriteria(
+            @Param("organIds") List<Long> organIds,
+            @Param("phaseIds") List<Long> phaseIds,
+            @Param("stateIds") List<Long> stateIds,
+            @Param("metastaticLinesIds") List<Long> metastaticLinesIds,
+            @Param("illnessStatesIds") List<Long> illnessStatesIds,
+            Pageable pageable);
 }

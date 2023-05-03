@@ -10,6 +10,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -137,7 +139,38 @@ public class TrialServiceImpl implements TrialService {
                     result.put("totalRecords", this.trialRepository.findAllTrials(pageable).getTotalElements());
                 }
                 return result;
+            }
+            case 8: {
+                List<Long> organIds = filters.getOrgans().stream()
+                        .filter(organ -> organ.isChecked())
+                        .map(organ -> organ.getId())
+                        .collect(Collectors.toList());
+                List<Long> phaseIds = filters.getPhases().stream()
+                        .filter(phase -> phase.isChecked())
+                        .map(phase -> phase.getId())
+                        .collect(Collectors.toList());
+                List<Long> stateIds=filters.getStates().stream()
+                        .filter(state -> state.isChecked())
+                        .map(state -> state.getId())
+                        .collect(Collectors.toList());
+                List<Long> metastaticLinesIds=filters.getLines().stream()
+                        .filter(line -> line.isChecked())
+                        .map(line -> line.getId())
+                        .collect(Collectors.toList());
+                List<Long> illnessStatesIds=filters.getIllnessStates().stream()
+                        .filter(line -> line.isChecked())
+                        .map(line -> line.getId())
+                        .collect(Collectors.toList());
 
+                List<Long> organIdsList = (organIds != null && !organIds.isEmpty()) ? organIds : null;
+                List<Long> phaseIdsList = (phaseIds != null && !phaseIds.isEmpty()) ? phaseIds : null;
+                List<Long> stateIdsList = (stateIds != null && !stateIds.isEmpty()) ? stateIds : Arrays.asList(5L, 6L, 7L);
+                List<Long> metastaticLinesIdsList = (metastaticLinesIds != null && !metastaticLinesIds.isEmpty()) ? metastaticLinesIds : null;
+                List<Long> illnessStatesIdsList = (illnessStatesIds != null && !illnessStatesIds.isEmpty()) ? illnessStatesIds : null;
+
+                result.put("list", this.trialRepository.findByCriteria(organIdsList,phaseIdsList,stateIdsList,metastaticLinesIdsList,illnessStatesIdsList,pageable).getContent());
+                result.put("totalRecords", this.trialRepository.findByCriteria(organIdsList,phaseIdsList,stateIdsList,metastaticLinesIdsList,illnessStatesIdsList,pageable).getTotalElements());
+                return result;
             }
             default: {
                 break;
