@@ -6,15 +6,13 @@ import com.ads.Investigationintranet.service.TrialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -99,8 +97,8 @@ public class TrialServiceImpl implements TrialService {
             }
             case 5: {
                 ids = filters.getIllnessStates().stream()
-                    .filter(line -> line.isChecked())
-                    .map(line -> line.getId())
+                    .filter(IllnessStates -> IllnessStates.isChecked())
+                    .map(IllnessStates -> IllnessStates.getId())
                     .collect(Collectors.toList());
                 if (ids.size() > 0) {
                     result.put("list", this.trialRepository.findByIllnessStatesIds(ids, pageable).getContent());
@@ -145,31 +143,36 @@ public class TrialServiceImpl implements TrialService {
                         .filter(organ -> organ.isChecked())
                         .map(organ -> organ.getId())
                         .collect(Collectors.toList());
+
                 List<Long> phaseIds = filters.getPhases().stream()
                         .filter(phase -> phase.isChecked())
                         .map(phase -> phase.getId())
                         .collect(Collectors.toList());
+
                 List<Long> stateIds=filters.getStates().stream()
                         .filter(state -> state.isChecked())
                         .map(state -> state.getId())
                         .collect(Collectors.toList());
+
                 List<Long> metastaticLinesIds=filters.getLines().stream()
                         .filter(line -> line.isChecked())
                         .map(line -> line.getId())
                         .collect(Collectors.toList());
+
                 List<Long> illnessStatesIds=filters.getIllnessStates().stream()
-                        .filter(line -> line.isChecked())
-                        .map(line -> line.getId())
+                        .filter(illnessStates -> illnessStates.isChecked())
+                        .map(illnessStates -> illnessStates.getId())
                         .collect(Collectors.toList());
+
 
                 List<Long> organIdsList = (organIds != null && !organIds.isEmpty()) ? organIds : null;
                 List<Long> phaseIdsList = (phaseIds != null && !phaseIds.isEmpty()) ? phaseIds : null;
                 List<Long> stateIdsList = (stateIds != null && !stateIds.isEmpty()) ? stateIds : Arrays.asList(5L, 6L, 7L);
                 List<Long> metastaticLinesIdsList = (metastaticLinesIds != null && !metastaticLinesIds.isEmpty()) ? metastaticLinesIds : null;
                 List<Long> illnessStatesIdsList = (illnessStatesIds != null && !illnessStatesIds.isEmpty()) ? illnessStatesIds : null;
-
-                result.put("list", this.trialRepository.findByCriteria(organIdsList,phaseIdsList,stateIdsList,metastaticLinesIdsList,illnessStatesIdsList,pageable).getContent());
-                result.put("totalRecords", this.trialRepository.findByCriteria(organIdsList,phaseIdsList,stateIdsList,metastaticLinesIdsList,illnessStatesIdsList,pageable).getTotalElements());
+                String word=(filters.getWord() != null && !filters.getWord().isEmpty()) ? filters.getWord() : null;
+                result.put("list", this.trialRepository.findByCriteria(organIdsList,stateIdsList,phaseIdsList,metastaticLinesIdsList,illnessStatesIdsList,word,pageable).getContent());
+                result.put("totalRecords", this.trialRepository.findByCriteria(organIdsList,stateIdsList,phaseIdsList,metastaticLinesIdsList,illnessStatesIdsList,word,pageable).getTotalElements());
                 return result;
             }
             default: {
@@ -204,5 +207,7 @@ public class TrialServiceImpl implements TrialService {
     @CacheEvict(value = {"clinicalTrialsCache","FilterListCache","OrgansByFamily,OrgansByFamilyList"}, allEntries = true)
     public void clearClinicalTrialsCache() {
     }
+
+
 
 }
