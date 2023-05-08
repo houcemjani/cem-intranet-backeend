@@ -40,7 +40,6 @@ public class ContactSet  {
 
     @OneToMany(mappedBy = "contactSet", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @OrderBy("position ASC")
-
     private List<Email> emails = new ArrayList<>();
 
     @OneToMany(mappedBy = "contactSet", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, fetch = FetchType.LAZY)

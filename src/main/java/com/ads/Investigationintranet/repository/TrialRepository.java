@@ -67,9 +67,9 @@ public interface TrialRepository extends JpaRepository<Trial, Long> {
             "LEFT JOIN igContactSet t10 ON t8.hhhId = t10.hhhId " +
             "LEFT JOIN TrialDisciplineIdentification t11 ON t11.trial.hhhId = t1.hhhId " +
             "LEFT JOIN t5.illnessState i " +
-            "LEFT JOIN t11.metastaticLines m " +
             "LEFT JOIN t9.phones phone1 " +
             "LEFT JOIN t10.phones phone2 " +
+            "LEFT JOIN t11.metastaticLines m " +
             "WHERE (COALESCE(:organIds, null ) IS NULL OR o.hhhId IN :organIds ) " +
             "AND (COALESCE(:phaseIds, null ) IS NULL OR ph.hhhId IN :phaseIds ) " +
             "AND (COALESCE(:metastaticLinesIds, null ) IS NULL OR m.hhhId IN :metastaticLinesIds ) " +

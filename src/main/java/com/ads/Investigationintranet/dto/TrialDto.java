@@ -1,5 +1,6 @@
 package com.ads.Investigationintranet.dto;
 import com.ads.Investigationintranet.domain.contact.ContactSet;
+import com.ads.Investigationintranet.domain.contact.Email;
 import com.ads.Investigationintranet.domain.contact.Phone;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +21,11 @@ public class TrialDto {
     private String clinicalResearchAssistant2;
     private Long StateId;
     private List<PhoneDto> arc1PhoneNumbers;
+
+    private List<EmailDto> arc1Emails;
     private List<PhoneDto> arc2PhoneNumbers;
+
+    private List<EmailDto> arc2Emails;
 
 
     public TrialDto(
@@ -56,6 +61,13 @@ public class TrialDto {
                 arc1PhoneNbr.add(phoneDto);
             }
             this.arc1PhoneNumbers=arc1PhoneNbr;
+
+            List<EmailDto> emails=new ArrayList<>();
+            for (Email email : contact1.getEmails()) {
+                EmailDto emailDto = new EmailDto(email.getHhhId(),email.getValue());
+                emails.add(emailDto);
+            }
+            this.arc1Emails=emails;
         }
 
         if (contact2!=null){
@@ -64,11 +76,20 @@ public class TrialDto {
                 PhoneDto phoneDto = new PhoneDto(phone.getHhhId(),phone.getValue());
                 arc2PhoneNbr.add(phoneDto);
             }
+            List<EmailDto> emails=new ArrayList<>();
+            for (Email email : contact2.getEmails()) {
+                EmailDto emailDto = new EmailDto(email.getHhhId(),email.getValue());
+                emails.add(emailDto);
+            }
+
             if (contact1!=null) {
-                if(!this.arc1PhoneNumbers.equals(arc2PhoneNbr))
+                if(!this.arc1PhoneNumbers.equals(arc2PhoneNbr)){
                     this.arc2PhoneNumbers=arc2PhoneNbr;
+                    this.arc2Emails=emails;
+                }
             }else{
                 this.arc2PhoneNumbers=arc2PhoneNbr;
+                this.arc2Emails=emails;
             }
 
         }
